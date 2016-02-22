@@ -25,11 +25,13 @@ task fatJar(type: Jar) {
 repositories {
     mavenCentral()
 	maven {
-    url  "http://dl.bintray.com/austinv11/maven" 
+    url  "http://dl.bintray.com/austinv11/maven"
   }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 	compile "sx.blah:Discord4J:2.2.7"
+	compile "com.google.code.gson:gson:2.6.1"
+
 }
