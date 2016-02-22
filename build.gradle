@@ -1,0 +1,35 @@
+group 'com.aktheknight.discordbot'
+version '1.0.0'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.aktheknight.discordbot.DiscordBot'
+    }
+}
+
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'Discord Bot',  
+        	'Implementation-Version': version,
+        	'Main-Class': 'com.aktheknight.discordbot.DiscordBot'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+repositories {
+    mavenCentral()
+	maven {
+    url  "http://dl.bintray.com/austinv11/maven" 
+  }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+	compile "sx.blah:Discord4J:2.2.7"
+}

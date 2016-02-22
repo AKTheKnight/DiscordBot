@@ -1,0 +1,12 @@
+## Gradle
+/run
+/.gradle
+/build
+
+## intellij
+/out
+/.idea
+/*.iml
+/*.ipr
+/*.iws
+/atlassian-ide-plugin.xml
