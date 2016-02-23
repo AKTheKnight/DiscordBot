@@ -33,5 +33,6 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 	compile "sx.blah:Discord4J:2.2.7"
 	compile "com.google.code.gson:gson:2.6.1"
+	compile "org.slf4j:slf4j-nop:1.7.16"
 
 }

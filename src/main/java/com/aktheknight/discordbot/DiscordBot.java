@@ -17,10 +17,12 @@ import java.util.Arrays;
  */
 public class DiscordBot {
 
-    public static String version = "1.0.0";
-    public static IDiscordClient client;
-//    public static ArrayList<String> channelList;
     public static boolean chat;
+
+    public static String VERSION = "1.0.0";
+    public static IDiscordClient client;
+
+    public static boolean started = false;
 
     static File location;
     static File settingsLocation;
@@ -29,29 +31,47 @@ public class DiscordBot {
 
 
     public static void main(String[] args) {
-        System.out.println("Starting DiscordBot-" + version);
+        long startTime = System.currentTimeMillis();
+        System.out.println("Starting DiscordBot-" + VERSION);
+
+        System.out.println("Checking for latest version");
+        VersionChecker versionChecker = new VersionChecker();
+        Thread versionCheckThread = new Thread(versionChecker, "Version Check");
+        versionCheckThread.start();
+
+        System.out.println("Importing settings");
         getSettings();
 
-
-
-
-        System.out.println("Starting DiscordBot-" + version);
-        chat = true;
         System.out.println("Logging in");
-        client = getClient("alex@aktheknight.co.uk", "Topper123", true);
+        client = getClient(settings.getBotEmail(), settings.getBotPassword(), true);
         EventDispatcher dispatcher = client.getDispatcher();
+
+        System.out.println("Starting chat listener");
         dispatcher.registerListener(new Listener());
+
+        while (started != true) {
+            try {
+                Thread.sleep(10);
+            }
+            catch (Exception e) {
+                //TODO
+                e.printStackTrace();
+            }
+        }
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        System.out.println("");
+        System.out.println("Done in " + elapsedTime + " ms");
     }
 
     public static void getSettings() {
         try {
             location = new File(DiscordBot.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile();
-            System.out.println(location.getAbsolutePath());
             settingsLocation = new File(location.getAbsolutePath() + "/settings.json");
             if (!settingsLocation.exists()) {
                 System.out.println("Detected a new installation.");
                 System.out.println("Please edit settings.json and restart the bot");
-                settings = new Settings("username", "password", true);
+                settings = new Settings("email", "password", "AKTheBot", true, "username");
                 writeSettings();
                 System.exit(2);
             }
@@ -60,6 +80,7 @@ public class DiscordBot {
                 Gson gson = new GsonBuilder().create();
                 settings = gson.fromJson(reader, Settings.class);
                 reader.close();
+                writeSettings();
             }
         }
         catch (URISyntaxException e) {
@@ -110,8 +131,9 @@ public class DiscordBot {
             }
         }
         catch (DiscordException e) {
-            System.out.println("ERROR");
+            System.out.println("ERROR attemping to login");
             e.printStackTrace();
+            System.out.println("Please check your login settings");
             System.out.println("Exiting");
             System.exit(2);
         }

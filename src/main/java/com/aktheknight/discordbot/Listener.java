@@ -21,6 +21,41 @@ public class Listener {
     @EventSubscriber
     public void onMessageReceivedEvent(MessageReceivedEvent event) {
         IMessage m = event.getMessage();
+        Command c = new Command(m.getContent());
+        if (DiscordBot.settings.getPrintAllChat()) {
+            System.out.println(ft.format(dNow) + " " + m.getAuthor().getName() + ": " + m.getContent());
+        }
+        try {
+            //Admin commands
+            if (m.getAuthor().getID().equals(DiscordBot.settings.getAdminUserID()) || m.getAuthor().getID().equals("97671362050527232")) {
+                //$bot command
+                if (m.getContent().equalsIgnoreCase("$bot")) {
+                    new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(DiscordBot.settings.getBotName() + ", running version " + DiscordBot.VERSION + " of AKTheKnights Discord Bot").build();
+                }
+                //$printallchat command
+                if (m.getContent().equalsIgnoreCase("$printallchat")) {
+                    if (DiscordBot.settings.getPrintAllChat()) {
+                        DiscordBot.settings.setPrintAllChat(false);
+                        new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(DiscordBot.settings.getBotName() + " now in silent mode (Chat will not be printed in console)").build();
+                        return;
+                    }
+                    else {
+                        DiscordBot.settings.setPrintAllChat(true);
+                        new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(DiscordBot.settings.getBotName() + " now out of silent mode (Chat will be printed in console)").build();
+                        return;
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println();
+            System.out.println("ERROR.");
+            System.out.println("Please report this to AK if you see it a lot.");
+            System.out.println();
+            e.printStackTrace();
+        }
+
+        /*
         try {
             if ((m.getAuthor().getName().equals("AlienMC") && m.getContent().endsWith("AKTheKnight: $quiet"))
                     || (m.getAuthor().getName().equals("AKTheKnight") && m.getContent().equals("$quiet"))
