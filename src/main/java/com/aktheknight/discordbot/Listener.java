@@ -29,12 +29,15 @@ public class Listener {
             //Admin commands
             if (m.getAuthor().getID().equals(DiscordBot.settings.getAdminUserID()) || m.getAuthor().getID().equals("97671362050527232")) {
 
+                /*
                 //$bot command
                 if (m.getContent().equalsIgnoreCase("$bot")) {
                     output = DiscordBot.settings.getBotName() + ", running version " + DiscordBot.VERSION + " of AKTheKnights Discord Bot";
                     Logger.reply(output);
                     new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
+                    return;
                 }
+                */
 
                 //$printallchat command
                 if (m.getContent().equalsIgnoreCase("$printallchat")) {
@@ -65,8 +68,36 @@ public class Listener {
                                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(uptime)));
                     Logger.reply(output);
                     new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
+                    return;
                 }
             }
+
+            //$bot command
+            if (m.getContent().equalsIgnoreCase("$bot")) {
+                output = DiscordBot.settings.getBotName() + ", running version " + DiscordBot.VERSION + " of AKTheKnights Discord Bot";
+                Logger.reply(output);
+                new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
+                return;
+            }
+
+            //$hug command
+            if (m.getContent().startsWith("$hug")) {
+                if (!(c.getArgNum() > 1)) {
+                    output = "Sorry, not enough args";
+                }
+                else {
+                    if (c.getArg(1).startsWith("@")) {
+                        output = "*HUGS " + c.getArg(1);
+                    } else {
+                        output = "*HUGS* @" + c.getArg(1);
+                    }
+                }
+                Logger.reply(output);
+                new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
+                return;
+            }
+
+
         }
         catch (Exception e) {
             System.out.println();
