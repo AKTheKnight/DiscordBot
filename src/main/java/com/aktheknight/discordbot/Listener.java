@@ -8,6 +8,7 @@ import sx.blah.discord.util.MessageBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Alex on 21/02/2016.
@@ -22,37 +23,55 @@ public class Listener {
     public void onMessageReceivedEvent(MessageReceivedEvent event) {
         IMessage m = event.getMessage();
         Command c = new Command(m.getContent());
-        if (DiscordBot.settings.getPrintAllChat()) {
-            System.out.println(ft.format(dNow) + " " + m.getAuthor().getName() + ": " + m.getContent());
-        }
+        Logger.chat(m.getAuthor().getName(), m.getContent());
+        String output;
         try {
             //Admin commands
             if (m.getAuthor().getID().equals(DiscordBot.settings.getAdminUserID()) || m.getAuthor().getID().equals("97671362050527232")) {
+
                 //$bot command
                 if (m.getContent().equalsIgnoreCase("$bot")) {
-                    new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(DiscordBot.settings.getBotName() + ", running version " + DiscordBot.VERSION + " of AKTheKnights Discord Bot").build();
+                    output = DiscordBot.settings.getBotName() + ", running version " + DiscordBot.VERSION + " of AKTheKnights Discord Bot";
+                    Logger.reply(output);
+                    new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
                 }
+
                 //$printallchat command
                 if (m.getContent().equalsIgnoreCase("$printallchat")) {
                     if (DiscordBot.settings.getPrintAllChat()) {
                         DiscordBot.settings.setPrintAllChat(false);
-                        new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(DiscordBot.settings.getBotName() + " now in silent mode (Chat will not be printed in console)").build();
+                        output = DiscordBot.settings.getBotName() + " now in silent mode (Chat will not be printed in console)";
+                        Logger.reply(output);
+                        new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
                         return;
                     }
                     else {
                         DiscordBot.settings.setPrintAllChat(true);
-                        new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(DiscordBot.settings.getBotName() + " now out of silent mode (Chat will be printed in console)").build();
+                        output = DiscordBot.settings.getBotName() + " now out of silent mode (Chat will be printed in console)";
+                        Logger.reply(output);
+                        new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
                         return;
                     }
+                }
+
+                if (m.getContent().equalsIgnoreCase("$uptime")) {
+                    long currentTime = System.currentTimeMillis();
+                    long uptime = currentTime - DiscordBot.startTime;
+                    output = DiscordBot.settings.getBotName() + " has been up for " + String.format("%02d:%02d:%02d",
+                            TimeUnit.MILLISECONDS.toHours(uptime),
+                            TimeUnit.MILLISECONDS.toMinutes(uptime) -
+                                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(uptime)),
+                            TimeUnit.MILLISECONDS.toSeconds(uptime) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(uptime)));
+                    Logger.reply(output);
+                    new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
                 }
             }
         }
         catch (Exception e) {
             System.out.println();
-            System.out.println("ERROR.");
-            System.out.println("Please report this to AK if you see it a lot.");
-            System.out.println();
-            e.printStackTrace();
+            Logger.error("Error while processing command", "Please report this to AK", e);
+            DiscordBot.shutdown();
         }
 
         /*
