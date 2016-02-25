@@ -177,6 +177,14 @@ public class DiscordBot {
      */
     static void shutdown() {
         Logger.info("Shutting down...");
+        try {
+            client.logout();
+        }
+        catch (Exception e) {
+            Logger.error("Unable to logout the bot", "Shutting down anyway", e);
+            Logger.close();
+            System.exit(3);
+        }
         Logger.close();
         System.exit(3);
     }

@@ -17,6 +17,9 @@ public class Logger {
     static SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss") ;
     static BufferedWriter writer;
 
+    /**
+     * Sets up the BufferedWriter for the logger
+     */
     public static void init() {
         try {
             File file = new File(DiscordBot.location + "/logs") ;
@@ -34,7 +37,11 @@ public class Logger {
         }
     }
 
-    //one content
+    /**
+     * Prints an error to the log and console with 1 param
+     * @param content1 The string form of the error
+     * @param e The exception
+     */
     public static void error(String content1, Exception e) {
         String output = format.format(date) + " [ERROR] " + content1;
         System.out.println(output);
@@ -46,7 +53,12 @@ public class Logger {
         pw.close();
     }
 
-    //two content
+    /**
+     * Prints an error to the log and console with 2 param
+     * @param content1 First string form of error
+     * @param content2 Second message to admin
+     * @param e The exception
+     */
     public static void error(String content1, String content2, Exception e) {
         String output = format.format(date) + " [ERROR] " + content1;
         System.out.println(output);
@@ -61,12 +73,20 @@ public class Logger {
         pw.close();
     }
 
+    /**
+     * Prints out info to console and log
+     * @param content The info message to be logged
+     */
     public static void info(String content) {
         String output = format.format(date) + " [INFO] " + content;
         System.out.println(output);
         write(output);
     }
 
+    /**
+     * Prints out the bots reply to a message
+     * @param content The bots reply
+     */
     public static void reply(String content) {
         String output = format.format(date) + " [BOT] " + content;
         if (DiscordBot.settings.getPrintAllChat()) {
@@ -75,6 +95,11 @@ public class Logger {
         write(output);
     }
 
+    /**
+     * Print out discord chat to log and console (if on)
+     * @param name Name of the user
+     * @param content The message
+     */
     public static void chat(String name, String content) {
         String output = format.format(date) + " [CHAT] " + name + ": " + content;
         if (DiscordBot.settings.getPrintAllChat()) {
@@ -83,6 +108,10 @@ public class Logger {
         write(output);
     }
 
+    /**
+     * Writes out the formatted message to the log
+     * @param message Message to print
+     */
     private static void write(String message) {
         try {
             writer.write(message + "\n");
@@ -98,8 +127,12 @@ public class Logger {
     }
 
 
+    /**
+     * Closes the writer nicely :)
+     */
     public static void close() {
         try {
+            writer.flush();
             writer.close();
         }
         catch (Exception e) {

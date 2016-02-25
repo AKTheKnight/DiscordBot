@@ -4,10 +4,12 @@ import sx.blah.discord.handle.EventSubscriber;
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.MessageBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -42,17 +44,17 @@ public class Listener {
                 //$printallchat command
                 if (m.getContent().equalsIgnoreCase("$printallchat")) {
                     if (DiscordBot.settings.getPrintAllChat()) {
-                        DiscordBot.settings.setPrintAllChat(false);
                         output = DiscordBot.settings.getBotName() + " now in silent mode (Chat will not be printed in console)";
                         Logger.reply(output);
                         new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
+                        DiscordBot.settings.setPrintAllChat(false);
                         return;
                     }
                     else {
-                        DiscordBot.settings.setPrintAllChat(true);
                         output = DiscordBot.settings.getBotName() + " now out of silent mode (Chat will be printed in console)";
                         Logger.reply(output);
                         new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
+                        DiscordBot.settings.setPrintAllChat(true);
                         return;
                     }
                 }
@@ -86,11 +88,20 @@ public class Listener {
                     output = "Sorry, not enough args";
                 }
                 else {
+                    List<IUser> mentions = m.getMentions();
+                    if (!mentions.isEmpty()) {
+                        output = "*HUGS* @" + c.getArg(1);
+                    }
+                    else {
+                        output = "*HUGS* " + mentions.get(0);
+                    }
+                    /*
                     if (c.getArg(1).startsWith("@")) {
                         output = "*HUGS " + c.getArg(1);
                     } else {
                         output = "*HUGS* @" + c.getArg(1);
                     }
+                    */
                 }
                 Logger.reply(output);
                 new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
