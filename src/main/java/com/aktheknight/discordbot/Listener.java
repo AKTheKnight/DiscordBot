@@ -1,8 +1,8 @@
 package com.aktheknight.discordbot;
 
+import com.aktheknight.discordbot.obj.CommandHelper;
 import sx.blah.discord.handle.EventSubscriber;
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
-import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.MessageBuilder;
@@ -24,7 +24,7 @@ public class Listener {
     @EventSubscriber
     public void onMessageReceivedEvent(MessageReceivedEvent event) {
         IMessage m = event.getMessage();
-        Command c = new Command(m.getContent());
+        CommandHelper c = new CommandHelper(m.getContent());
         Logger.chat(m.getAuthor().getName(), m.getContent());
         String output;
         try {
@@ -59,6 +59,14 @@ public class Listener {
                     }
                 }
 
+                if (m.getContent().equalsIgnoreCase("$shutdown")) {
+                    output = DiscordBot.settings.getBotName() + " is now shutting down";
+                    Logger.reply(output);
+                    new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
+                    DiscordBot.shutdown();
+                }
+
+                /*
                 if (m.getContent().equalsIgnoreCase("$uptime")) {
                     long currentTime = System.currentTimeMillis();
                     long uptime = currentTime - DiscordBot.startTime;
@@ -72,6 +80,7 @@ public class Listener {
                     new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
                     return;
                 }
+                */
             }
 
             //$bot command
@@ -103,6 +112,21 @@ public class Listener {
                     }
                     */
                 }
+                Logger.reply(output);
+                new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
+                return;
+            }
+
+            //$uptime command
+            if (m.getContent().equalsIgnoreCase("$uptime")) {
+                long currentTime = System.currentTimeMillis();
+                long uptime = currentTime - DiscordBot.startTime;
+                output = DiscordBot.settings.getBotName() + " has been up for " + String.format("%02d:%02d:%02d",
+                        TimeUnit.MILLISECONDS.toHours(uptime),
+                        TimeUnit.MILLISECONDS.toMinutes(uptime) -
+                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(uptime)),
+                        TimeUnit.MILLISECONDS.toSeconds(uptime) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(uptime)));
                 Logger.reply(output);
                 new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
                 return;
@@ -176,7 +200,7 @@ public class Listener {
             }
 
             if (m.getAuthor().getName().equals("AlienMC") && m.getContent().contains("AKTheKnight: $hello")) {
-                Command c = new Command(m.getContent());
+                CommandHelper c = new CommandHelper(m.getContent());
                 if (c.getArgNum() < 6) {
                     new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent("Not enough args for $hello").build();
                     return;
@@ -185,7 +209,7 @@ public class Listener {
                 new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent("Hello " + name + ". I am AKTheBot. How are you?").build();
             }
             if (m.getAuthor().getName().equals("AKTheKnight") && m.getContent().startsWith("$hello")) {
-                Command c = new Command(m.getContent());
+                CommandHelper c = new CommandHelper(m.getContent());
                 if (c.getArgNum()< 1) {
                     new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent("Not enough args for $hello").build();
                     return;

@@ -1,4 +1,4 @@
-package com.aktheknight.discordbot;
+package com.aktheknight.discordbot.obj;
 
 import java.util.ArrayList;
 

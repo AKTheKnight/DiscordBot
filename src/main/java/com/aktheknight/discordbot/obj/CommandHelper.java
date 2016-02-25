@@ -1,13 +1,13 @@
-package com.aktheknight.discordbot;
+package com.aktheknight.discordbot.obj;
 
 /**
  * Created by Alex on 21/02/2016 at 11:58.
  */
-public class Command {
+public class CommandHelper {
 
     private String[] command;
 
-    public Command(String cmd) {
+    public CommandHelper(String cmd) {
         command = cmd.split(" ");
     }
 

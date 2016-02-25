@@ -1,5 +1,6 @@
 package com.aktheknight.discordbot;
 
+import com.aktheknight.discordbot.obj.Settings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import sx.blah.discord.api.ClientBuilder;
@@ -8,9 +9,6 @@ import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.EventDispatcher;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by dsupport on 21/02/2016.
@@ -178,6 +176,7 @@ public class DiscordBot {
     static void shutdown() {
         Logger.info("Shutting down...");
         try {
+            Logger.info("Logging out the bot");
             client.logout();
         }
         catch (Exception e) {
@@ -185,6 +184,7 @@ public class DiscordBot {
             Logger.close();
             System.exit(3);
         }
+        Logger.info("Closing down the logger");
         Logger.close();
         System.exit(3);
     }
