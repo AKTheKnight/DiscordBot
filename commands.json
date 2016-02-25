@@ -1,0 +1,22 @@
+[
+  {
+    "name": "hello",
+    "admin": false,
+    "argNum": 2,
+    "reply": "Hello there",
+    "argAtEnd": true,
+    "endArg": 2,
+    "replyAfterArg": true,
+    "reply2": "How are you?"
+  },
+  {
+    "name": "welcome",
+    "admin": false,
+    "argNum": 2,
+    "reply": "Welcome to the group",
+    "argAtEnd": true,
+    "endArg": 2,
+    "replyAfterArg": true,
+    "reply2": "If you need any help feel free to ask"
+  }
+]
