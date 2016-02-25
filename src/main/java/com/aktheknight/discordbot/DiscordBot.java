@@ -1,5 +1,6 @@
 package com.aktheknight.discordbot;
 
+import com.aktheknight.discordbot.obj.Command;
 import com.aktheknight.discordbot.obj.Settings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,6 +10,8 @@ import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.EventDispatcher;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by dsupport on 21/02/2016.
@@ -24,8 +27,11 @@ public class DiscordBot {
 
     static File location;
     static File settingsLocation;
+    static File commandsLocation;
 
     static Settings settings;
+
+    static ArrayList<Command> commands;
 
     static long startTime;
 
@@ -42,6 +48,10 @@ public class DiscordBot {
         Thread versionCheckThread = new Thread(versionChecker, "Version Check");
         versionCheckThread.start();
         pause(100); */
+
+        Logger.info("Importing commands");
+        importCommands();
+        pause(100);
 
         Logger.info("Importing settings");
         getSettings();
@@ -88,6 +98,43 @@ public class DiscordBot {
         catch (Exception e) {
             System.out.println();
             Logger.error("Unable to read existing settings.json", "Please report this to AK", e);
+            shutdown();
+        }
+    }
+
+    public static void importCommands() {
+        try {
+            commandsLocation = new File(location.getAbsolutePath() + "/commands.json");
+            if (!commandsLocation.exists()) {
+                Logger.info("Could not find commands.json");
+                Logger.info("Creating file");
+                commands = new ArrayList<>();
+                commands.add(new Command("name", false, 1, "reply", false, 0, false, "reply2"));
+                writeCommands();
+            }
+            else {
+                BufferedReader reader = new BufferedReader(new FileReader(commandsLocation));
+                Gson gson = new GsonBuilder().create();
+                commands = new ArrayList<>(Arrays.asList(gson.fromJson(reader, Command[].class)));
+                reader.close();
+                writeCommands();
+            }
+        }
+        catch (Exception e) {
+
+        }
+    }
+
+    public static void writeCommands() {
+        try {
+            Gson obj = new GsonBuilder().setPrettyPrinting().create();
+            FileWriter writer = new FileWriter(commandsLocation);
+            writer.write(obj.toJson(commands));
+            writer.close();
+        }
+        catch (IOException e) {
+            System.out.println();
+            Logger.error("Unable to write commands to file", "Please report this to AK", e);
             shutdown();
         }
     }

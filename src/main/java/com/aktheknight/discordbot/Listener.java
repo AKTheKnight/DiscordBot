@@ -1,5 +1,6 @@
 package com.aktheknight.discordbot;
 
+import com.aktheknight.discordbot.obj.Command;
 import com.aktheknight.discordbot.obj.CommandHelper;
 import sx.blah.discord.handle.EventSubscriber;
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
@@ -131,6 +132,46 @@ public class Listener {
                 new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
                 return;
             }
+
+            //process json commands
+            DiscordBot.commands.forEach(com -> {
+                if (m.getContent().startsWith("$" + com.getName())) {
+                    if (c.getArgNum() < com.getArgNum()) {
+                        String out = "Sorry mate, not enough args";
+                        try {
+                            if (com.getArgAtEnd()) {
+                                out += " " + c.getArg(com.getEndArg() - 1);
+                            }
+                            Logger.reply(out);
+                            new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(out).build();
+                        }
+                        catch (NullPointerException n) {
+
+                        }
+                        catch (Exception e) {
+
+                        }
+                    }
+                    String out = com.getReply();
+                    try {
+                        if (com.getArgAtEnd()) {
+                            out += " " + c.getArg(com.getEndArg() - 1);
+                        }
+                        Logger.reply(out);
+                        if(com.getReplyAfterArg()) {
+                            out += " " + com.getReply2();
+                        }
+                        new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(out).build();
+                    }
+                    catch (NullPointerException n) {
+
+                    }
+                    catch (Exception e) {
+
+                    }
+
+                }
+            });
 
 
         }
