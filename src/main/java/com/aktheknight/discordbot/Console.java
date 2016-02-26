@@ -1,5 +1,8 @@
 package com.aktheknight.discordbot;
 
+import com.aktheknight.discordbot.obj.Command;
+import com.aktheknight.discordbot.obj.CommandHelper;
+
 import java.util.Scanner;
 
 /**
@@ -10,13 +13,21 @@ public class Console implements Runnable {
     public void run() {
         Scanner in = new Scanner(System.in);
         while (true) {
-            String message = in.nextLine();
-            if (message.startsWith("$shutdown")) {
+            String command = in.next();
+            CommandHelper com = new CommandHelper(command);
+            Logger.console(command);
+            if (com.getArg(0).equalsIgnoreCase("$shutdown")) {
                 DiscordBot.shutdown();
             }
-            if (message.startsWith("$updateCommands")) {
+            if (com.getArg(0).equalsIgnoreCase("$updateCommands")) {
                 DiscordBot.importCommands();
-                Logger.info("Importing ");
+                Logger.reply("Importing ");
+            }
+            if (com.getArg(0).equalsIgnoreCase("$update")) {
+                Logger.reply("Checking for latest version");
+                VersionChecker versionChecker = new VersionChecker();
+                Thread versionCheckThread = new Thread(versionChecker, "Version Check");
+                versionCheckThread.start();
             }
         }
     }

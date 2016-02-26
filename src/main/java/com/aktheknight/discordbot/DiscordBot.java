@@ -40,13 +40,6 @@ public class DiscordBot {
         Logger.info("Starting DiscordBot-" + VERSION);
         pause(100);
 
-        //TODO add $version command
-/*        System.out.println("Checking for latest version");
-        VersionChecker versionChecker = new VersionChecker();
-        Thread versionCheckThread = new Thread(versionChecker, "Version Check");
-        versionCheckThread.start();
-        pause(100); */
-
         Logger.info("Importing commands");
         importCommands();
         pause(100);

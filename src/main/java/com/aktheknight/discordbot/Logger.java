@@ -38,6 +38,13 @@ public class Logger {
         }
     }
 
+    public static void console(String content) {
+        date = new Date();
+        String output = format.format(date) + " [CONSOLE] " + content;
+        System.out.println(output);
+        write(output);
+    }
+
     /**
      * Prints an error to the log and console with 1 param
      * @param content1 The string form of the error

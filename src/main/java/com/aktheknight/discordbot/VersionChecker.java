@@ -25,10 +25,9 @@ public class VersionChecker implements Runnable {
         } finally {
             IOUtils.closeQuietly(in);
         }
-        System.out.println("Latest mod version = " + latestVersion);
+        Logger.reply("Latest mod version = " + latestVersion);
         isLatestVersion = DiscordBot.VERSION.equals(latestVersion);
-        System.out.println("Are you running latest version = " + isLatestVersion);
-        DiscordBot.started = true;
+        Logger.reply("Are you running latest version = " + isLatestVersion);
     }
 
     public boolean isLatestVersion() {
