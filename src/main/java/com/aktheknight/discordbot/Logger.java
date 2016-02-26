@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class Logger {
 
-    static Date date = new Date() ;
+    static Date date;
     static SimpleDateFormat fileFormat = new SimpleDateFormat("HH-mm-ss dd-MM-yyyy");
     static SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss") ;
     static BufferedWriter writer;
@@ -24,6 +24,7 @@ public class Logger {
         try {
             File file = new File(DiscordBot.location + "/logs") ;
             file.mkdirs();
+            date = new Date() ;
             file = new File(file.getAbsolutePath() + "/" + fileFormat.format(date) + ".log");
             writer = new BufferedWriter(new FileWriter(file));
         }
@@ -43,6 +44,7 @@ public class Logger {
      * @param e The exception
      */
     public static void error(String content1, Exception e) {
+        date = new Date();
         String output = format.format(date) + " [ERROR] " + content1;
         System.out.println(output);
         write(output);
@@ -60,6 +62,7 @@ public class Logger {
      * @param e The exception
      */
     public static void error(String content1, String content2, Exception e) {
+        date = new Date();
         String output = format.format(date) + " [ERROR] " + content1;
         System.out.println(output);
         write(output);
@@ -78,6 +81,7 @@ public class Logger {
      * @param content The info message to be logged
      */
     public static void info(String content) {
+        date = new Date();
         String output = format.format(date) + " [INFO] " + content;
         System.out.println(output);
         write(output);
@@ -88,6 +92,7 @@ public class Logger {
      * @param content The bots reply
      */
     public static void reply(String content) {
+        date = new Date();
         String output = format.format(date) + " [BOT] " + content;
         if (DiscordBot.settings.getPrintAllChat()) {
             System.out.println(output);
@@ -101,6 +106,7 @@ public class Logger {
      * @param content The message
      */
     public static void chat(String name, String content) {
+        date = new Date();
         String output = format.format(date) + " [CHAT] " + name + ": " + content;
         if (DiscordBot.settings.getPrintAllChat()) {
             System.out.println(output);

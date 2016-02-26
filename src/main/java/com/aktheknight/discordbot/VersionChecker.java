@@ -19,19 +19,9 @@ public class VersionChecker implements Runnable {
         InputStream in = null;
         try {
             in = new URL("https://raw.githubusercontent.com/AKTheKnight/DiscordBot/master/version.txt").openStream();
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        try {
             latestVersion = IOUtils.readLines(in).get(0);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Exception e) {
+            Logger.error("Error while checking for latest version", "Report to AK if this keeps happening", e);
         } finally {
             IOUtils.closeQuietly(in);
         }

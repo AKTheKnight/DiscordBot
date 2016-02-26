@@ -18,10 +18,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class Listener {
 
-    Date dNow = new Date();
-    SimpleDateFormat ft = new SimpleDateFormat("hh:mm:ss");
-
-
     @EventSubscriber
     public void onMessageReceivedEvent(MessageReceivedEvent event) {
         IMessage m = event.getMessage();
