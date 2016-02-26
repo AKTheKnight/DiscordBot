@@ -18,12 +18,10 @@ import java.util.Arrays;
  */
 public class DiscordBot {
 
-    public static boolean chat;
+    static String VERSION = "1.0.0-ALPHA";
+    static IDiscordClient client;
 
-    public static String VERSION = "1.0.0-ALPHA";
-    public static IDiscordClient client;
-
-    public static boolean started = false;
+    static boolean started = false;
 
     static File location;
     static File settingsLocation;
@@ -71,6 +69,9 @@ public class DiscordBot {
         System.out.println();
         Logger.info("Done in " + elapsedTime + " ms");
         System.out.println();
+
+        Thread console = new Thread(new Console());
+        console.start();
     }
 
     /**
