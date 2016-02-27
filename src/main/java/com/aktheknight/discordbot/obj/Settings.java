@@ -1,7 +1,5 @@
 package com.aktheknight.discordbot.obj;
 
-import java.util.ArrayList;
-
 /**
  * Created by Alex on 22/02/2016 at 15:20.
  */

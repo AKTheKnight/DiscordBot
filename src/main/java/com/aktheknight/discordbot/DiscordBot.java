@@ -96,6 +96,9 @@ public class DiscordBot {
         }
     }
 
+    /**
+     * Import json commands from file
+     */
     public static void importCommands() {
         try {
             commandsLocation = new File(location.getAbsolutePath() + "/commands.json");
@@ -103,7 +106,10 @@ public class DiscordBot {
                 Logger.info("Could not find commands.json");
                 Logger.info("Creating file");
                 commands = new ArrayList<>();
-                commands.add(new Command("name", false, 1, "reply", false, 0, false, "reply2"));
+                ArrayList<String> example = new ArrayList<>();
+                example.add("Hello");
+                example.add("%arg2%");
+                commands.add(new Command("name", false, 2, example));
                 writeCommands();
             }
             else {
@@ -115,10 +121,13 @@ public class DiscordBot {
             }
         }
         catch (Exception e) {
-
+            Logger.error("Error while closing commands file", e);
         }
     }
 
+    /**
+     * Write the commands objects to file
+     */
     public static void writeCommands() {
         try {
             Gson obj = new GsonBuilder().setPrettyPrinting().create();

@@ -1,6 +1,5 @@
 package com.aktheknight.discordbot;
 
-import com.aktheknight.discordbot.obj.Command;
 import com.aktheknight.discordbot.obj.CommandHelper;
 
 import java.util.Scanner;

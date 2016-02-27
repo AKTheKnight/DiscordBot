@@ -1,11 +1,9 @@
 package com.aktheknight.discordbot;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.apache.commons.io.IOUtils;
+
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Created by Alex on 23/02/2016 at 21:53.

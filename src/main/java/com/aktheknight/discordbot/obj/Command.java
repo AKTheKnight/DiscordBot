@@ -1,27 +1,21 @@
 package com.aktheknight.discordbot.obj;
 
+import java.util.ArrayList;
+
 /**
- * Created by Alex on 25/02/2016 at 11:52.
+ * Created by Alex on 27/02/2016 at 14:55.
  */
 public class Command {
     private String name;
     private boolean admin;
     private int argNum;
-    private String reply;
-    private boolean argAtEnd;
-    private int endArg;
-    private boolean replyAfterArg;
-    private String reply2;
+    private ArrayList<String> reply;
 
-    public Command(String name, boolean admin, int argNum, String reply, boolean argAtEnd, int endArg, boolean replyAfterArg, String reply2) {
+    public Command(String name, boolean admin, int argNum, ArrayList<String> reply) {
         this.name = name;
         this.admin = admin;
         this.argNum = argNum;
         this.reply = reply;
-        this.argAtEnd = argAtEnd;
-        this.endArg = endArg;
-        this.replyAfterArg = replyAfterArg;
-        this.reply2 = reply2;
     }
 
     public String getName() {
@@ -36,23 +30,15 @@ public class Command {
         return argNum;
     }
 
-    public String getReply() {
+    public ArrayList getReply() {
         return reply;
     }
 
-    public boolean getArgAtEnd() {
-        return argAtEnd;
+    public int getReplyLength() {
+        return reply.size();
     }
 
-    public int getEndArg() {
-        return endArg;
-    }
-
-    public boolean getReplyAfterArg() {
-        return replyAfterArg;
-    }
-
-    public String getReply2() {
-        return reply2;
+    public String getReplyNum(int n) {
+        return reply.get(n);
     }
 }

@@ -38,10 +38,13 @@ public class Logger {
         }
     }
 
+    /**
+     * Write out messages from the console into the log
+     * @param content
+     */
     public static void console(String content) {
         date = new Date();
         String output = format.format(date) + " [CONSOLE] " + content;
-        System.out.println(output);
         write(output);
     }
 
