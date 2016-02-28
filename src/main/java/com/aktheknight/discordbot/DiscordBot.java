@@ -77,9 +77,10 @@ public class DiscordBot {
             if (!settingsLocation.exists()) {
                 Logger.info("Detected a new installation.");
                 Logger.info("Please edit settings.json and restart the bot");
-                settings = new Settings("email", "password", "AKTheBot", true, "username");
+                settings = new Settings(DiscordBot.VERSION, "email", "password", "AKTheBot", true, "userID");
                 writeSettings();
-                shutdown();
+                Logger.info("Shutting down....");
+                System.exit(2);
             }
             else {
                 BufferedReader reader = new BufferedReader(new FileReader(settingsLocation));

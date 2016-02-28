@@ -6,13 +6,16 @@ package com.aktheknight.discordbot.obj;
 public class Settings {
 
     private String SettingsForTheBot = "Speak to @AKTheKnight if you need any help";
+    private String version;
+    private String DoNotChange = "Anything above this line";
     private String botEmail;
     private String botPassword;
     private String botName;
     private boolean printAllChat;
     private String adminUserID;
 
-    public Settings(String botEmail, String botPassword, String botName, boolean printAllChat, String adminUserID) {
+    public Settings(String version, String botEmail, String botPassword, String botName, boolean printAllChat, String adminUserID) {
+        this.version = version;
         this.botEmail = botEmail;
         this.botPassword = botPassword;
         this.botName = botName;

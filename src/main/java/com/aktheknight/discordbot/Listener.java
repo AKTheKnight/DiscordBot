@@ -157,8 +157,11 @@ public class Listener {
                         else if (str.equals("%auth%")) {
                             out += m.getAuthor().getName() + " ";
                         }
+                        else if (str.equals("%bot%")) {
+                            out += DiscordBot.settings.getBotName() + " ";
+                        }
                         else {
-                            out += str;
+                            out += str + " ";
                         }
                     }
                     try {
