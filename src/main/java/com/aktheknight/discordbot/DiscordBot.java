@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public class DiscordBot {
 
-    static String VERSION = "1.0.0-ALPHA";
+    static String VERSION = "1.0.1-ALPHA";
     static IDiscordClient client;
 
     static boolean started = false;
@@ -110,18 +110,16 @@ public class DiscordBot {
                 ArrayList<String> example = new ArrayList<>();
                 example.add("Hello");
                 example.add("%arg2%");
-                commands.add(new Command("name", false, 2, example));
+                commands.add(new Command("name", false, 2, "split, aliases, with, commas", example));
                 writeCommands();
-            }
-            else {
+            } else {
                 BufferedReader reader = new BufferedReader(new FileReader(commandsLocation));
                 Gson gson = new GsonBuilder().create();
                 commands = new ArrayList<>(Arrays.asList(gson.fromJson(reader, Command[].class)));
                 reader.close();
                 writeCommands();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Logger.error("Error while closing commands file", e);
         }
     }

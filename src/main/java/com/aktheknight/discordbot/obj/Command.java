@@ -1,6 +1,7 @@
 package com.aktheknight.discordbot.obj;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Alex on 27/02/2016 at 14:55.
@@ -9,12 +10,14 @@ public class Command {
     private String name;
     private boolean admin;
     private int argNum;
+    private String aliases;
     private ArrayList<String> reply;
 
-    public Command(String name, boolean admin, int argNum, ArrayList<String> reply) {
+    public Command(String name, boolean admin, int argNum, String aliases, ArrayList<String> reply) {
         this.name = name;
         this.admin = admin;
         this.argNum = argNum;
+        this.aliases = aliases;
         this.reply = reply;
     }
 
@@ -28,6 +31,10 @@ public class Command {
 
     public int getArgNum() {
         return argNum;
+    }
+
+    public ArrayList getAliases() {
+        return new ArrayList<>(Arrays.asList(aliases.split("\\s*,\\s*")));
     }
 
     public ArrayList getReply() {

@@ -19,8 +19,9 @@ public class Console implements Runnable {
                 DiscordBot.shutdown();
             }
             if (com.getArg(0).equalsIgnoreCase("$updateCommands")) {
-                DiscordBot.importCommands();
                 Logger.reply("Importing ");
+                DiscordBot.importCommands();
+                Logger.reply("Done importing commands");
             }
             if (com.getArg(0).equalsIgnoreCase("$update")) {
                 Logger.reply("Checking for latest version");

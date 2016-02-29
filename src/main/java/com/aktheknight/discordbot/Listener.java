@@ -3,6 +3,7 @@ package com.aktheknight.discordbot;
 import com.aktheknight.discordbot.obj.CommandHelper;
 import sx.blah.discord.handle.EventSubscriber;
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
+import sx.blah.discord.handle.impl.obj.Guild;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.MessageBuilder;
@@ -26,6 +27,13 @@ public class Listener {
             //Admin commands
             if (m.getAuthor().getID().equals(DiscordBot.settings.getAdminUserID()) || m.getAuthor().getID().equals("97671362050527232")) {
 
+                //ban command
+                if (m.getContent().startsWith("$ban") || m.getContent().startsWith("/ban")) {
+                    if (m.getMentions().size() < 1) {
+                        return;
+                    }
+                    m.getChannel().getGuild().banUser(m.getMentions().get(0).getID());
+                }
                 /*
                 //$bot command
                 if (m.getContent().equalsIgnoreCase("$bot")) {
@@ -127,52 +135,74 @@ public class Listener {
                 return;
             }
 
-            //process new json command layout
+            //process json command layout
             DiscordBot.commands.forEach(com -> {
-            if (m.getContent().startsWith("$" + com.getName())) {
-                if (com.getAdmin() && !m.getAuthor().getID().equals(DiscordBot.settings.getAdminUserID()) || !m.getAuthor().getID().equals("97671362050527232")) {
-                    return;
+                Boolean isCommand = false;
+                if (m.getContent().startsWith("$" + com.getName())) {
+                    isCommand = true;
                 }
-                else if (c.getArgNum() < com.getArgNum()) {
-                    String out = "Not enough args";
-                    try {
-                        Logger.reply(out);
-                        new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(out).build();
-
-                    }
-                    catch (Exception e) {
-
-                    }
-                    return;
-                }
-                else {
-                    String out = "";
-                    ArrayList<String> reply = com.getReply();
-                    for (int i = 0; i < reply.size(); i++) {
-                        String str = reply.get(i);
-                        if (str.startsWith("%arg") && str.endsWith("%")) {
-                            int n = Character.getNumericValue(str.charAt(4));
-                            out += c.getArg(n - 1) + " ";
-                        }
-                        else if (str.equals("%auth%")) {
-                            out += m.getAuthor().getName() + " ";
-                        }
-                        else if (str.equals("%bot%")) {
-                            out += DiscordBot.settings.getBotName() + " ";
-                        }
-                        else {
-                            out += str + " ";
-                        }
-                    }
-                    try {
-                        Logger.reply(out);
-                        new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(out).build();
-
-                    } catch (Exception e) {
-
+                ArrayList<String> aliases = com.getAliases();
+                for (String alias: aliases) {
+                    if (m.getContent().startsWith("$" + alias)) {
+                        isCommand = true;
                     }
                 }
-            }
+                if (isCommand) {
+                    if (com.getAdmin() && !m.getAuthor().getID().equals(DiscordBot.settings.getAdminUserID()) || !m.getAuthor().getID().equals("97671362050527232")) {
+                        return;
+                    }
+                    else if (c.getArgNum() < com.getArgNum()) {
+                        String out = "Not enough args";
+                        try {
+                            Logger.reply(out);
+                            new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(out).build();
+                        }
+                        catch (Exception e) {
+
+                        }
+                        return;
+                    }
+                    else {
+                        String out = "";
+                        ArrayList<String> reply = com.getReply();
+                        for (int i = 0; i < reply.size(); i++) {
+                            String str = reply.get(i);
+                            if (str.startsWith("%arg") && str.endsWith("%")) {
+                                int n = Character.getNumericValue(str.charAt(4));
+                                out += c.getArg(n - 1) + " ";
+                            }
+                            else if (str.equals("%auth%")) {
+                                out += m.getAuthor().getName() + " ";
+                            }
+                            else if (str.equals("%bot%")) {
+                                out += DiscordBot.settings.getBotName() + " ";
+                            }
+                            else if (str.equals("%uptime%")) {
+                                long currentTime = System.currentTimeMillis();
+                                long uptime = currentTime - DiscordBot.startTime;
+                                out += String.format("%02d:%02d:%02d",
+                                        TimeUnit.MILLISECONDS.toHours(uptime),
+                                        TimeUnit.MILLISECONDS.toMinutes(uptime) -
+                                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(uptime)),
+                                        TimeUnit.MILLISECONDS.toSeconds(uptime) -
+                                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(uptime)))
+                                        + " ";
+                            }
+                            else if (str.equals("%version%") || str.equals("%ver%")) {
+                                out += DiscordBot.VERSION + " ";
+                            }
+                            else {
+                                out += str + " ";
+                            }
+                        }
+                        try {
+                            Logger.reply(out);
+                            new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(out).build();
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }
             });
 
 
