@@ -24,7 +24,7 @@ public class DiscordBot {
     static String VERSION = "1.0.1-ALPHA";
     static IDiscordClient client;
 
-    static boolean started = false;
+    static boolean loggedIn = false;
 
     static File location;
     static File settingsLocation;
@@ -43,12 +43,16 @@ public class DiscordBot {
         Logger.info("Starting DiscordBot-" + VERSION);
         pause(100);
 
+        Logger.info("Importing settings");
+        getSettings();
+        pause(100);
+
         Logger.info("Importing commands");
         importCommands();
         pause(100);
 
-        Logger.info("Importing settings");
-        getSettings();
+        Logger.info("Checking commands for issues and duplicates");
+        checkCommands();
         pause(100);
 
         Logger.info("Logging in");
@@ -74,7 +78,7 @@ public class DiscordBot {
      * Imports the current settings from settings.json
      * If settings.json isn't found, it writes a new instance and stops the bot
      */
-    public static void getSettings() {
+    static void getSettings() {
         try {
             settingsLocation = new File(location.getAbsolutePath() + "/settings.json");
             if (!settingsLocation.exists()) {
@@ -103,7 +107,7 @@ public class DiscordBot {
     /**
      * Import json commands from file
      */
-    public static void importCommands() {
+    static void importCommands() {
         try {
             commandsLocation = new File(location.getAbsolutePath() + "/commands.json");
             if (!commandsLocation.exists()) {
@@ -130,7 +134,7 @@ public class DiscordBot {
     /**
      * Write the commands objects to file
      */
-    public static void writeCommands() {
+    static void writeCommands() {
         try {
             Gson obj = new GsonBuilder().setPrettyPrinting().create();
             FileWriter writer = new FileWriter(commandsLocation);
@@ -147,7 +151,7 @@ public class DiscordBot {
     /**
      * Gets the file location of the program
      */
-    public static void getLocation() {
+    static void getLocation() {
         try {
             location = new File(DiscordBot.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile();
         }
@@ -166,7 +170,7 @@ public class DiscordBot {
     /**
      * Writes currently held settings into the settings.json file
      */
-    public static void writeSettings() {
+    static void writeSettings() {
         try {
             Gson obj = new GsonBuilder().setPrettyPrinting().create();
             FileWriter writer = new FileWriter(settingsLocation);
@@ -190,11 +194,12 @@ public class DiscordBot {
      * @return instance of discord client or null
      */
     @SuppressWarnings("SameParameterValue")
-    public static IDiscordClient getClient(String email, String password, boolean login) { //Returns an instance of the discord client
+    static IDiscordClient getClient(String email, String password, boolean login) { //Returns an instance of the discord client
         ClientBuilder clientBuilder = new ClientBuilder(); //Creates the ClientBuilder instance
         clientBuilder.withLogin(email, password); //Adds the login info to the builder
         try {
             if (login) {
+                loggedIn = true;
                 return clientBuilder.login(); //Creates the client instance and logs the client in
             } else {
                 return clientBuilder.build(); //Creates the client instance but it doesn't log the client in yet, you would have to call client.login() yourself
@@ -211,10 +216,38 @@ public class DiscordBot {
     }
 
     /**
+     * Checks all the commands for any duplicate names or for duplicate aliases
+     */
+    static void checkCommands() {
+        commands.forEach(com -> {
+            String name = com.getName();
+            commands.forEach(check -> {
+                if (com.equals(check)) {
+                    return;
+                }
+                if (name.equalsIgnoreCase(check.getName())) {
+                    Logger.blank();
+                    Logger.error("Error while importing commands", "Two commands have the same name/alias: " + name);
+                    Logger.error("Please fix this", "And then try the bot again");
+                    shutdown();
+                }
+                ArrayList aliases = check.getAliases();
+                aliases.forEach(alias -> {
+                    if (name.equals(alias)) {
+                        Logger.blank();
+                        Logger.error("Error while importing commands", "Two commands have the same name/alias: " + name);
+                        Logger.error("Please fix this", "And then try the bot again");
+                        shutdown();
+                    }
+                });
+            });
+        });
+    }
+
+    /**
      * Executes Thread#sleep in catch blocks
      * @param time how long to sleep for (ms)
      */
-    @SuppressWarnings("SameParameterValue")
     static void pause(int time) {
         try {
             Thread.sleep(time);
@@ -237,14 +270,16 @@ public class DiscordBot {
                 TimeUnit.MILLISECONDS.toSeconds(uptime) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(uptime)));
         Logger.info("Shutting down after " + output + " hours");
-        try {
-            Logger.info("Logging out the bot");
-            client.logout();
-        }
-        catch (Exception e) {
-            Logger.error("Unable to logout the bot", "Shutting down anyway", e);
-            Logger.close();
-            System.exit(3);
+        if (loggedIn) {
+            try {
+                Logger.info("Logging out the bot");
+                client.logout();
+            }
+            catch (Exception e) {
+                Logger.error("Unable to logout the bot", "Shutting down anyway", e);
+                Logger.close();
+                System.exit(3);
+            }
         }
         Logger.info("Closing down the logger");
         Logger.close();

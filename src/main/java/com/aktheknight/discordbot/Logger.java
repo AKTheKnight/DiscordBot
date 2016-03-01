@@ -18,9 +18,17 @@ public class Logger {
     static BufferedWriter writer;
 
     /**
+     * Writes a blank line to the file (used for errors)
+     */
+    static void blank() {
+        String output = "";
+        write(output);
+    }
+
+    /**
      * Sets up the BufferedWriter for the logger
      */
-    public static void init() {
+    static void init() {
         try {
             File file = new File(DiscordBot.location + "/logs") ;
             file.mkdirs();
@@ -42,9 +50,24 @@ public class Logger {
      * Write out messages from the console into the log
      * @param content the string message from the console
      */
-    public static void console(String content) {
+    static void console(String content) {
         date = new Date();
         String output = format.format(date) + " [CONSOLE] " + content;
+        write(output);
+    }
+
+    /**
+     * Prints an error to the log and console with 2 param
+     * @param content1 First string form of error
+     * @param content2 Second message to admin
+     */
+    static void error(String content1, String content2) {
+        date = new Date();
+        String output = format.format(date) + " [ERROR] " + content1;
+        System.out.println(output);
+        write(output);
+        output = format.format(date) + " [ERROR] " + content2;
+        System.out.println(output);
         write(output);
     }
 
@@ -53,7 +76,7 @@ public class Logger {
      * @param content1 The string form of the error
      * @param e The exception
      */
-    public static void error(String content1, Exception e) {
+    static void error(String content1, Exception e) {
         date = new Date();
         String output = format.format(date) + " [ERROR] " + content1;
         System.out.println(output);
@@ -71,7 +94,7 @@ public class Logger {
      * @param content2 Second message to admin
      * @param e The exception
      */
-    public static void error(String content1, String content2, Exception e) {
+    static void error(String content1, String content2, Exception e) {
         date = new Date();
         String output = format.format(date) + " [ERROR] " + content1;
         System.out.println(output);
@@ -90,7 +113,7 @@ public class Logger {
      * Prints out info to console and log
      * @param content The info message to be logged
      */
-    public static void info(String content) {
+    static void info(String content) {
         date = new Date();
         String output = format.format(date) + " [INFO] " + content;
         System.out.println(output);
@@ -101,7 +124,7 @@ public class Logger {
      * Prints out the bots reply to a message
      * @param content The bots reply
      */
-    public static void reply(String content) {
+    static void reply(String content) {
         date = new Date();
         String output = format.format(date) + " [BOT] " + content;
         if (DiscordBot.settings.getPrintAllChat()) {
@@ -115,7 +138,7 @@ public class Logger {
      * @param name Name of the user
      * @param content The message
      */
-    public static void chat(String name, String content) {
+    static void chat(String name, String content) {
         date = new Date();
         String output = format.format(date) + " [CHAT] " + name + ": " + content;
         if (DiscordBot.settings.getPrintAllChat()) {
@@ -128,7 +151,7 @@ public class Logger {
      * Writes out the formatted message to the log
      * @param message Message to print
      */
-    private static void write(String message) {
+    static void write(String message) {
         try {
             writer.write(message + "\n");
             writer.flush();
@@ -146,7 +169,7 @@ public class Logger {
     /**
      * Closes the writer nicely :)
      */
-    public static void close() {
+    static void close() {
         try {
             writer.flush();
             writer.close();
