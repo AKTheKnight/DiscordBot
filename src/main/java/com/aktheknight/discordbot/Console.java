@@ -11,6 +11,7 @@ public class Console implements Runnable {
 
     public void run() {
         Scanner in = new Scanner(System.in);
+        //noinspection InfiniteLoopStatement
         while (true) {
             String command = in.next();
             CommandHelper com = new CommandHelper(command);

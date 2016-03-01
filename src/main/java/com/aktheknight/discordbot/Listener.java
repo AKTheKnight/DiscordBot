@@ -3,7 +3,6 @@ package com.aktheknight.discordbot;
 import com.aktheknight.discordbot.obj.CommandHelper;
 import sx.blah.discord.handle.EventSubscriber;
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
-import sx.blah.discord.handle.impl.obj.Guild;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.MessageBuilder;
@@ -13,8 +12,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Alex on 21/02/2016.
+ * Created by Alex on 21/02/2016 at 19:49.
  */
+@SuppressWarnings({"UnnecessaryReturnStatement", "JavaDoc"})
 public class Listener {
 
     @EventSubscriber
@@ -158,7 +158,8 @@ public class Listener {
                             new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(out).build();
                         }
                         catch (Exception e) {
-
+                            Logger.error("Error while processing command", "Please report this to AK", e);
+                            DiscordBot.shutdown();
                         }
                         return;
                     }
@@ -199,7 +200,8 @@ public class Listener {
                             Logger.reply(out);
                             new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(out).build();
                         } catch (Exception e) {
-
+                            Logger.error("Error while processing command", "Please report this to AK", e);
+                            DiscordBot.shutdown();
                         }
                     }
                 }
@@ -208,7 +210,6 @@ public class Listener {
 
         }
         catch (Exception e) {
-            System.out.println();
             Logger.error("Error while processing command", "Please report this to AK", e);
             DiscordBot.shutdown();
         }

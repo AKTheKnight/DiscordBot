@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 /**
- * Created by Alex on 23/02/2016 at 21:53.
+ * Created by Alex on 23/02/2016 at 21:53 at 19:49.
  */
 public class VersionChecker implements Runnable {
     private static boolean isLatestVersion = false;
@@ -28,10 +28,16 @@ public class VersionChecker implements Runnable {
         Logger.reply("Are you running latest version = " + isLatestVersion);
     }
 
+    /**
+     * @return in the name
+     */
     public boolean isLatestVersion() {
         return isLatestVersion;
     }
 
+    /**
+     * @return the version got from discord
+     */
     public String getLatestVersion() {
         return latestVersion;
     }

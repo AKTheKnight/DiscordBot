@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Alex on 24/02/2016.
+ * Created by Alex on 24/02/2016 at 19:49.
  */
 public class Logger {
 
@@ -40,7 +40,7 @@ public class Logger {
 
     /**
      * Write out messages from the console into the log
-     * @param content
+     * @param content the string message from the console
      */
     public static void console(String content) {
         date = new Date();

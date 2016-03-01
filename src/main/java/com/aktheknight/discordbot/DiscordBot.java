@@ -8,13 +8,16 @@ import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.DiscordException;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.EventDispatcher;
+import sx.blah.discord.handle.impl.obj.Channel;
+import sx.blah.discord.util.MessageBuilder;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Created by dsupport on 21/02/2016.
+ * Created by Alex on 21/02/2016 at 19:49.
  */
 public class DiscordBot {
 
@@ -186,6 +189,7 @@ public class DiscordBot {
      * @param login whether to login or not? (always true)
      * @return instance of discord client or null
      */
+    @SuppressWarnings("SameParameterValue")
     public static IDiscordClient getClient(String email, String password, boolean login) { //Returns an instance of the discord client
         ClientBuilder clientBuilder = new ClientBuilder(); //Creates the ClientBuilder instance
         clientBuilder.withLogin(email, password); //Adds the login info to the builder
@@ -210,6 +214,7 @@ public class DiscordBot {
      * Executes Thread#sleep in catch blocks
      * @param time how long to sleep for (ms)
      */
+    @SuppressWarnings("SameParameterValue")
     static void pause(int time) {
         try {
             Thread.sleep(time);
@@ -223,7 +228,15 @@ public class DiscordBot {
      * Closes the logger and shuts down
      */
     static void shutdown() {
-        Logger.info("Shutting down...");
+        long currentTime = System.currentTimeMillis();
+        long uptime = currentTime - DiscordBot.startTime;
+        String output = DiscordBot.settings.getBotName() + " has been up for " + String.format("%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toHours(uptime),
+                TimeUnit.MILLISECONDS.toMinutes(uptime) -
+                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(uptime)),
+                TimeUnit.MILLISECONDS.toSeconds(uptime) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(uptime)));
+        Logger.info("Shutting down after " + output + " hours");
         try {
             Logger.info("Logging out the bot");
             client.logout();
@@ -237,5 +250,7 @@ public class DiscordBot {
         Logger.close();
         System.exit(3);
     }
+
+
 
 }

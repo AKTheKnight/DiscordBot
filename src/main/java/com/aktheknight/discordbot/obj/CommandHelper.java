@@ -1,8 +1,9 @@
 package com.aktheknight.discordbot.obj;
 
 /**
- * Created by Alex on 21/02/2016 at 11:58.
+ * Created by Alex on 21/02/2016 at 11:58 at 19:49.
  */
+@SuppressWarnings("JavaDoc")
 public class CommandHelper {
 
     private String[] command;
