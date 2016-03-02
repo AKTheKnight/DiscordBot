@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class DiscordBot {
 
-    static String VERSION = "1.0.1-ALPHA";
+    static String VERSION = "1.0.2-ALPHA";
     static IDiscordClient client;
 
     static boolean loggedIn = false;
@@ -39,7 +39,6 @@ public class DiscordBot {
         startTime = System.currentTimeMillis();
         getLocation();
         Logger.init();
-        Logger.colourInit();
         Logger.info("Starting DiscordBot-" + VERSION);
         pause(100);
 
@@ -54,9 +53,6 @@ public class DiscordBot {
         Logger.info("Checking commands for issues and duplicates");
         checkCommands();
         pause(100);
-
-        test();
-        shutdown();
 
         Logger.info("Logging in");
         client = getClient(settings.getBotEmail(), settings.getBotPassword(), true);
