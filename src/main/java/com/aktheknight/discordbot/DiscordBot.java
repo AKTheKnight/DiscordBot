@@ -2,14 +2,13 @@ package com.aktheknight.discordbot;
 
 import com.aktheknight.discordbot.obj.Command;
 import com.aktheknight.discordbot.obj.Settings;
+import com.aktheknight.discordbot.util.PrintColour;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.DiscordException;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.EventDispatcher;
-import sx.blah.discord.handle.impl.obj.Channel;
-import sx.blah.discord.util.MessageBuilder;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -40,6 +39,7 @@ public class DiscordBot {
         startTime = System.currentTimeMillis();
         getLocation();
         Logger.init();
+        Logger.colourInit();
         Logger.info("Starting DiscordBot-" + VERSION);
         pause(100);
 
@@ -54,6 +54,9 @@ public class DiscordBot {
         Logger.info("Checking commands for issues and duplicates");
         checkCommands();
         pause(100);
+
+        test();
+        shutdown();
 
         Logger.info("Logging in");
         client = getClient(settings.getBotEmail(), settings.getBotPassword(), true);
@@ -73,6 +76,16 @@ public class DiscordBot {
         Thread console = new Thread(new Console());
         console.start();
     }
+
+    /**
+     * Used for testing anything I'm working on
+     */
+    static void test() {
+        Logger.colourInit();
+        Logger.print(PrintColour.RED, "Testing");
+        Logger.print(PrintColour.GREEN, "Testing");
+    }
+
 
     /**
      * Imports the current settings from settings.json
@@ -232,6 +245,7 @@ public class DiscordBot {
                     shutdown();
                 }
                 ArrayList aliases = check.getAliases();
+                //noinspection unchecked
                 aliases.forEach(alias -> {
                     if (name.equals(alias)) {
                         Logger.blank();

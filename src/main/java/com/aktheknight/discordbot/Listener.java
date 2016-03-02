@@ -141,7 +141,7 @@ public class Listener {
                 if (m.getContent().startsWith("$" + com.getName())) {
                     isCommand = true;
                 }
-                ArrayList<String> aliases = com.getAliases();
+                @SuppressWarnings("unchecked") ArrayList<String> aliases = com.getAliases();
                 for (String alias: aliases) {
                     if (m.getContent().startsWith("$" + alias)) {
                         isCommand = true;
@@ -165,7 +165,7 @@ public class Listener {
                     }
                     else {
                         String out = "";
-                        ArrayList<String> reply = com.getReply();
+                        @SuppressWarnings("unchecked") ArrayList<String> reply = com.getReply();
                         for (int i = 0; i < reply.size(); i++) {
                             String str = reply.get(i);
                             if (str.startsWith("%arg") && str.endsWith("%")) {

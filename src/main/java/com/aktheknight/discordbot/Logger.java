@@ -1,9 +1,9 @@
 package com.aktheknight.discordbot;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import com.aktheknight.discordbot.util.PrintColour;
+import com.aktheknight.discordbot.util.PrintColourWriter;
+
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,11 +17,22 @@ public class Logger {
     static SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss") ;
     static BufferedWriter writer;
 
+    static PrintColourWriter out;
+
+    static void colourInit() {
+        try {
+            out = new PrintColourWriter(System.out);
+        } catch (UnsupportedEncodingException e) {
+            error("This is bad", "Report this to AK NOW!!", e);
+        }
+    }
+
     /**
      * Writes a blank line to the file (used for errors)
      */
     static void blank() {
         String output = "";
+        System.out.println(output);
         write(output);
     }
 
@@ -44,6 +55,11 @@ public class Logger {
             e.printStackTrace();
             System.exit(3);
         }
+        try {
+            out = new PrintColourWriter(System.out);
+        } catch (UnsupportedEncodingException e) {
+            error("This is bad", "Report this to AK NOW!!", e);
+        }
     }
 
     /**
@@ -64,10 +80,10 @@ public class Logger {
     static void error(String content1, String content2) {
         date = new Date();
         String output = format.format(date) + " [ERROR] " + content1;
-        System.out.println(output);
+        out.println(PrintColour.RED, output);
         write(output);
         output = format.format(date) + " [ERROR] " + content2;
-        System.out.println(output);
+        out.println(PrintColour.RED, output);
         write(output);
     }
 
@@ -79,7 +95,7 @@ public class Logger {
     static void error(String content1, Exception e) {
         date = new Date();
         String output = format.format(date) + " [ERROR] " + content1;
-        System.out.println(output);
+        out.println(PrintColour.RED, output);
         write(output);
         e.printStackTrace();
         PrintWriter pw = new PrintWriter(writer);
@@ -97,10 +113,10 @@ public class Logger {
     static void error(String content1, String content2, Exception e) {
         date = new Date();
         String output = format.format(date) + " [ERROR] " + content1;
-        System.out.println(output);
+        out.println(PrintColour.RED, output);
         write(output);
         output = format.format(date) + " [ERROR] " + content2;
-        System.out.println(output);
+        out.println(PrintColour.RED, output);
         write(output);
         e.printStackTrace();
         PrintWriter pw = new PrintWriter(writer);
@@ -145,6 +161,15 @@ public class Logger {
             System.out.println(output);
         }
         write(output);
+    }
+
+    /**
+     * Used for testing
+     * @param colour colour for printing
+     * @param output string to be printed
+     */
+    static void print(PrintColour colour, String output) {
+        out.println(colour, output);
     }
 
     /**
