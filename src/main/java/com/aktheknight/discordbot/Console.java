@@ -3,6 +3,7 @@ package com.aktheknight.discordbot;
 import com.aktheknight.discordbot.obj.CommandHelper;
 
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Alex on 25/02/2016 at 21:49.
@@ -23,6 +24,17 @@ public class Console implements Runnable {
                 Logger.reply("Importing ");
                 DiscordBot.importCommands();
                 Logger.reply("Done importing commands");
+            }
+            if (com.getArg(0).equalsIgnoreCase("$uptime")) {
+                long currentTime = System.currentTimeMillis();
+                long uptime = currentTime - DiscordBot.startTime;
+                String out = String.format("%02d:%02d:%02d",
+                        TimeUnit.MILLISECONDS.toHours(uptime),
+                        TimeUnit.MILLISECONDS.toMinutes(uptime) -
+                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(uptime)),
+                        TimeUnit.MILLISECONDS.toSeconds(uptime) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(uptime)));
+                Logger.reply(out);
             }
             if (com.getArg(0).equalsIgnoreCase("$update")) {
                 Logger.reply("Checking for latest version");
