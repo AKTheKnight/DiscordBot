@@ -9,7 +9,7 @@ public class CommandHelper {
     private String[] command;
 
     public CommandHelper(String cmd) {
-        command = cmd.split(" ");
+        command = cmd.split("\\s*");
     }
 
     public int getArgNum() {
@@ -29,7 +29,7 @@ public class CommandHelper {
     }
 
     public void setCommand(String str) {
-        this.command = str.split(" ");
+        this.command = str.split("\\s*");
     }
 }
 

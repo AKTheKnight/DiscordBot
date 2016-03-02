@@ -148,7 +148,7 @@ public class Listener {
                     }
                 }
                 if (isCommand) {
-                    if (com.getAdmin() && !m.getAuthor().getID().equals(DiscordBot.settings.getAdminUserID()) || !m.getAuthor().getID().equals("97671362050527232")) {
+                    if (com.getAdmin() && (!m.getAuthor().getID().equals(DiscordBot.settings.getAdminUserID()) || !m.getAuthor().getID().equals("97671362050527232"))) {
                         return;
                     }
                     else if (c.getArgNum() < com.getArgNum()) {
