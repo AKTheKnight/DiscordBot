@@ -31,9 +31,13 @@ If you have a suggestion feel free to report it on the issue tracker and I will 
 6) Profit?
 7) Add any commands you want :)
 
-#### Planned additions:
+## Planned additions:
 * Package with a launch file (avoid the typing in cmd)
 * Maybe a gui for it all
+
+## Other stuff:
+##### This project uses:
+* Discord4j: https://github.com/austinv11/Discord4J
 
 ## License:
 The MIT License (MIT)
