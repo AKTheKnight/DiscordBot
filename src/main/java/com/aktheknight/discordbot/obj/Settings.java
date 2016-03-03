@@ -1,5 +1,7 @@
 package com.aktheknight.discordbot.obj;
 
+import java.util.ArrayList;
+
 /**
  * Created by Alex on 22/02/2016 at 15:20.
  */
@@ -14,6 +16,7 @@ public class Settings {
     private String botName;
     private boolean printAllChat;
     private String adminUserID;
+    private ArrayList<String> otherAdminIDs;
 
     /**
      * Only used for creating the default template at the moment
@@ -24,13 +27,14 @@ public class Settings {
      * @param printAllChat whether to print all chat recieved to console
      * @param adminUserID the admin user id (for admin commands)
      */
-    public Settings(String version, String botEmail, String botPassword, String botName, boolean printAllChat, String adminUserID) {
+    public Settings(String version, String botEmail, String botPassword, String botName, boolean printAllChat, String adminUserID, ArrayList<String> otherAdminIDs) {
         this.version = version;
         this.botEmail = botEmail;
         this.botPassword = botPassword;
         this.botName = botName;
         this.printAllChat = printAllChat;
         this.adminUserID = adminUserID;
+        this.otherAdminIDs = otherAdminIDs;
     }
 
     public String getBotPassword() {
@@ -55,6 +59,14 @@ public class Settings {
 
     public String getAdminUserID() {
         return adminUserID;
+    }
+
+    public ArrayList<String> getOtherAdminIDs() {
+        return otherAdminIDs;
+    }
+
+    public void addOtherAdminID(String id) {
+        otherAdminIDs.add(id);
     }
 
 }

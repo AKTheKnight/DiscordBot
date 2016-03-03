@@ -1,5 +1,5 @@
 group 'com.aktheknight.discordbot'
-version '1.0.3-ALPHA'
+version '1.0.4-ALPHA'
 
 apply plugin: 'java'
 

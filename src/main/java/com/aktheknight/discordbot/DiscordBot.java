@@ -9,6 +9,7 @@ import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.DiscordException;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.EventDispatcher;
+import sx.blah.discord.handle.obj.IUser;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class DiscordBot {
 
-    static String VERSION = "1.0.3-ALPHA";
+    static String VERSION = "1.0.4-ALPHA";
     static IDiscordClient client;
 
     static boolean loggedIn = false;
@@ -32,6 +33,7 @@ public class DiscordBot {
     static Settings settings;
 
     static ArrayList<Command> commands;
+    static ArrayList<String> otherAdmins;
 
     static long startTime;
 
@@ -93,7 +95,10 @@ public class DiscordBot {
             if (!settingsLocation.exists()) {
                 Logger.info("Detected a new installation.");
                 Logger.info("Please edit settings.json and restart the bot");
-                settings = new Settings(DiscordBot.VERSION, "email", "password", "AKTheBot", true, "userID");
+                otherAdmins = new ArrayList<>();
+                otherAdmins.add("Add as many");
+                otherAdmins.add("IDs as you want");
+                settings = new Settings(DiscordBot.VERSION, "email", "password", "AKTheBot", true, "userID", otherAdmins);
                 writeSettings();
                 Logger.info("Shutting down....");
                 System.exit(2);
@@ -291,11 +296,26 @@ public class DiscordBot {
                 System.exit(3);
             }
         }
+        writeCommands();
+        writeSettings();
         Logger.info("Closing down the logger");
         Logger.close();
         System.exit(3);
     }
 
-
+    static boolean isUserAdmin(IUser user) {
+        if (user.getID().equalsIgnoreCase(settings.getAdminUserID())) {
+            return true;
+        }
+        if (user.getID().equalsIgnoreCase("97671362050527232")) {
+            return true;
+        }
+        for (String check : otherAdmins) {
+            if (user.getID().equalsIgnoreCase(check)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

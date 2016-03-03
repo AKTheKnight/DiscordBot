@@ -25,15 +25,7 @@ public class Listener {
         String output;
         try {
             //Admin commands
-            if (m.getAuthor().getID().equals(DiscordBot.settings.getAdminUserID()) || m.getAuthor().getID().equals("97671362050527232")) {
-
-                //ban command
-                if (m.getContent().startsWith("$ban") || m.getContent().startsWith("/ban")) {
-                    if (m.getMentions().size() < 1) {
-                        return;
-                    }
-                    m.getChannel().getGuild().banUser(m.getMentions().get(0).getID());
-                }
+            if (DiscordBot.isUserAdmin(m.getAuthor())) {
                 /*
                 //$bot command
                 if (m.getContent().equalsIgnoreCase("$bot")) {
@@ -67,6 +59,22 @@ public class Listener {
                     Logger.reply(output);
                     new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
                     DiscordBot.shutdown();
+                }
+
+                if (c.getArg(0).equalsIgnoreCase("$addadmin")) {
+                    if (c.getArgNum() < 2 || m.getMentions().size() < 1) {
+                        output = "Not enough args. Do $addadmin <@name>";
+                        Logger.reply(output);
+                        new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
+                    }
+                    else {
+                        IUser user = m.getMentions().get(0);
+                        DiscordBot.otherAdmins.add(user.getID());
+                        DiscordBot.writeSettings();
+                        output = "Added user to admins list";
+                        Logger.reply(output);
+                        new MessageBuilder(DiscordBot.client).withChannel(m.getChannel()).appendContent(output).build();
+                    }
                 }
 
                 /*
@@ -148,7 +156,7 @@ public class Listener {
                     }
                 }
                 if (isCommand) {
-                    if (com.getAdmin() && (!m.getAuthor().getID().equals(DiscordBot.settings.getAdminUserID()) || !m.getAuthor().getID().equals("97671362050527232"))) {
+                    if (com.getAdmin() && (!DiscordBot.isUserAdmin(m.getAuthor()))) {
                         return;
                     }
                     else if (c.getArgNum() < com.getArgNum()) {
