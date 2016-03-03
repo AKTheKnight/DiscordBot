@@ -114,7 +114,7 @@ public class DiscordBot {
         catch (Exception e) {
             System.out.println();
             Logger.error("Unable to read existing settings.json", "Please report this to AK", e);
-            shutdown();
+            System.exit(3);
         }
     }
 
@@ -278,14 +278,15 @@ public class DiscordBot {
     static void shutdown() {
         long currentTime = System.currentTimeMillis();
         long uptime = currentTime - DiscordBot.startTime;
-        String output = DiscordBot.settings.getBotName() + " has been up for " + String.format("%02d:%02d:%02d",
-                TimeUnit.MILLISECONDS.toHours(uptime),
-                TimeUnit.MILLISECONDS.toMinutes(uptime) -
-                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(uptime)),
-                TimeUnit.MILLISECONDS.toSeconds(uptime) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(uptime)));
-        Logger.info("Shutting down after " + output + " hours");
         if (loggedIn) {
+            String output = DiscordBot.settings.getBotName() + " has been up for " + String.format("%02d:%02d:%02d",
+                    TimeUnit.MILLISECONDS.toHours(uptime),
+                    TimeUnit.MILLISECONDS.toMinutes(uptime) -
+                            TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(uptime)),
+                    TimeUnit.MILLISECONDS.toSeconds(uptime) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(uptime)));
+            Logger.info("Shutting down after " + output + " hours");
+
             try {
                 Logger.info("Logging out the bot");
                 client.logout();
@@ -295,9 +296,11 @@ public class DiscordBot {
                 Logger.close();
                 System.exit(3);
             }
+
+            writeCommands();
+            writeSettings();
         }
-        writeCommands();
-        writeSettings();
+
         Logger.info("Closing down the logger");
         Logger.close();
         System.exit(3);

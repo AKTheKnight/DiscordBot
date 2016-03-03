@@ -111,6 +111,7 @@ public class Logger {
      * @param e The exception
      */
     static void error(String content1, String content2, Exception e) {
+        System.out.println();
         date = new Date();
         String output = format.format(date) + " [ERROR] " + content1;
         out.println(PrintColour.RED, output);
@@ -118,8 +119,7 @@ public class Logger {
         output = format.format(date) + " [ERROR] " + content2;
         out.println(PrintColour.RED, output);
         write(output);
-        e.printStackTrace();
-        PrintWriter pw = new PrintWriter(writer);
+        PrintWriter pw = new PrintWriter(System.out);
         e.printStackTrace(pw);
         pw.flush();
         pw.close();
