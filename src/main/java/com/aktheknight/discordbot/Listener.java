@@ -108,12 +108,11 @@ public class Listener {
                     output = "Sorry, not enough args";
                 }
                 else {
-                    List<IUser> mentions = m.getMentions();
-                    if (!mentions.isEmpty()) {
+                    if (m.getMentions().size() < 1) {
                         output = "*HUGS* @" + c.getArg(1);
                     }
                     else {
-                        output = "*HUGS* " + mentions.get(0);
+                        output = "*HUGS* " + m.getMentions().get(0);
                     }
                     /*
                     if (c.getArg(1).startsWith("@")) {
