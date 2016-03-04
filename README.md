@@ -25,7 +25,7 @@ If you have a suggestion feel free to report it on the issue tracker and I will 
 
 1) Download the latest version and select where you want to run the bot (Preferably an empty folder)
 2) Create your bot account (New account on discord dedicated for the bot.) Can be run on your account but not advised
-3) Start running the bot: "java -jar DiscordBot-VERSION.jar" (It will stop the first time)
+3) Start running the bot: (Run the .bat file if on windows) else: "java -jar DiscordBot-VERSION.jar" (It will stop the first time)
 4) Open settings.json and edit the settings
 5) Run the bot
 6) Profit?
