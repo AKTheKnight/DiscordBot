@@ -220,11 +220,8 @@ public class DiscordBot {
             }
         }
         catch (DiscordException e) {
-            System.out.println("ERROR attemping to login");
-            e.printStackTrace();
-            System.out.println("Please check your login settings");
-            System.out.println("Exiting");
-            System.exit(2);
+            Logger.error("Failed logging in", "Please check your settings", e);
+            shutdown();
         }
         return null;
     }
