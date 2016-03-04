@@ -1,5 +1,5 @@
 group 'com.aktheknight.discordbot'
-version '1.0.4-ALPHA'
+version '1.0.5-ALPHA'
 
 apply plugin: 'java'
 
@@ -17,7 +17,7 @@ task fatJar(type: Jar) {
         	'Implementation-Version': version,
         	'Main-Class': 'com.aktheknight.discordbot.DiscordBot'
     }
-    baseName = project.name + '-all'
+    baseName = project.name
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }

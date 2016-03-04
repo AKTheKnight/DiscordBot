@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class DiscordBot {
 
-    static String VERSION = "1.0.4-ALPHA";
+    static String VERSION = "1.0.5-ALPHA";
     static IDiscordClient client;
 
     static boolean loggedIn = false;
