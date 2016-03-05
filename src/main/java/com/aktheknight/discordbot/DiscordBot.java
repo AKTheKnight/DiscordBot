@@ -39,8 +39,14 @@ public class DiscordBot {
 
     public static void main(String[] args) {
         startTime = System.currentTimeMillis();
+
         getLocation();
         Logger.init();
+        System.setErr(new PrintStream(new OutputStream() {
+            public void write(int b) {
+            }
+        }));
+
         Logger.info("Starting DiscordBot-" + VERSION);
         pause(100);
 
@@ -221,7 +227,8 @@ public class DiscordBot {
         }
         catch (DiscordException e) {
             Logger.error("Failed logging in", "Please check your settings", e);
-            shutdown();
+            Logger.close();
+            System.exit(3);
         }
         return null;
     }

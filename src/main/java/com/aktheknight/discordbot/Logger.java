@@ -97,7 +97,6 @@ public class Logger {
         String output = format.format(date) + " [ERROR] " + content1;
         out.println(PrintColour.RED, output);
         write(output);
-        e.printStackTrace();
         PrintWriter pw = new PrintWriter(writer);
         e.printStackTrace(pw);
         pw.flush();
@@ -119,7 +118,7 @@ public class Logger {
         output = format.format(date) + " [ERROR] " + content2;
         out.println(PrintColour.RED, output);
         write(output);
-        PrintWriter pw = new PrintWriter(System.out);
+        PrintWriter pw = new PrintWriter(writer);
         e.printStackTrace(pw);
         pw.flush();
         pw.close();
@@ -186,7 +185,6 @@ public class Logger {
             System.out.println("ERROR. Unable to write to logging file");
             System.out.println("Please report this to AK");
             System.out.println();
-            e.printStackTrace();
         }
     }
 
@@ -200,11 +198,6 @@ public class Logger {
             writer.close();
         }
         catch (Exception e) {
-            System.out.println();
-            System.out.println("ERROR. Unable to close logging file");
-            System.out.println("Please report this to AK");
-            System.out.println();
-            e.printStackTrace();
             System.exit(3);
         }
     }
