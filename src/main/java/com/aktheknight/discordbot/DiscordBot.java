@@ -147,7 +147,8 @@ public class DiscordBot {
                 writeCommands();
             }
         } catch (Exception e) {
-            Logger.error("Error while closing commands file", e);
+            Logger.error("Error while importing commands. Check your syntax", e);
+            System.exit(3);
         }
     }
 
