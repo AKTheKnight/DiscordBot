@@ -1,1 +1,1 @@
-Change admin checking to be DiscordBot#isUserAdmin or #isUserMod
+Add gui
